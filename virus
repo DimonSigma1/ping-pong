@@ -1,0 +1,45 @@
+import pygame as pg
+
+class TextBox():
+    def __init__(self, x, y, width, height, text_color, fon_color, frame_color):
+        self.rect = pg.Rect(x, y, width, height)
+        self.font = pg.font.Font(None, height)
+        self.entered_string = str()
+        self.fon_color= fon_color
+        self.text_color = text_color
+        self.frame_color = frame_color
+
+    def update(self, events):
+        x, y = pg.mouse.get_pos()
+        if not self.rect.collidepoint(x, y):
+            return
+        for event in events:
+            if event.type == pg.KEYDOWN:
+                key = event.dict['key']
+                if key >= 48 and key <=57:
+                    self.entered_string += chr(key)
+                elif key >= 65 and key <=90:
+                    self.entered_string += chr(key)
+                elif key >= 97 and key <=122:
+                    self.entered_string += chr(key)
+                elif key >= 128 and key <=175:
+                    self.stentered_stringr += chr(key)
+                elif key >= 224 and key <=240:
+                    self.entered_string += chr(key)
+                elif key == 8:
+                    self.entered_string = self.entered_string[:-1]
+                elif key == 32:
+                    self.entered_string = chr(32)      
+
+    def draw(self, window):
+        x, y = pg.mouse.get_pos()
+        is_hovered = False
+        if self.rect.collidepoint(x, y):
+            is_hovered = True
+        image = self.font.render(self.entered_string, True, self.text_color) 
+        pg.paint.rect(window, self.fon_color, self.rect)
+        image_rect = image.get_rect()
+        image_rect.center = self.rect.senter
+        if is_hovered:
+            pg.paint.rect(window, self.frame.color, self.rect, 5)
+        window.blit(image, image_rect)   
